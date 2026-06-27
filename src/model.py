@@ -84,7 +84,6 @@ class LogisticRegressionScratch:
 
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
-            print(f"Run #{_} - Current Loss: {loss}")
 
     def predict_proba(self, X):
         """
