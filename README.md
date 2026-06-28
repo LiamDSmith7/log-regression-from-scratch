@@ -168,3 +168,4 @@ The provided task document mentions several areas that would be valuable to expl
 * **Experiment tracking**, for example recording learning rate, iterations, regularisation strength, and evaluation metrics across runs.
 * **A small containerised version of the project**, so the model can be run consistently in different environments.
 * **Improved explainability**, such as reporting feature weights to show which measurements most influence the prediction.
+* **Alternative optimisation methods**, such as Newton’s method or stochastic gradient descent, to compare convergence speed and model performance against the current batch gradient descent approach.
