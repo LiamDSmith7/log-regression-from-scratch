@@ -33,7 +33,7 @@ A second version of the model was created introducing L2 regularisation. The res
 pip install -r requirements.txt
 
 ## Running the project
-python train.py
+python main.py
 
 ## Running tests
 pytest
@@ -66,7 +66,32 @@ pytest
 ## Model Assumptions:
 The model is assuming processed data, i.e. it is presuming the X_train and X_test variables are appropriately scaled. Functions are provided in preprocessing.py for this, however the model does not resolve issues with this, and the user is expected to do the appropriate cleaning before running the analysis. 
 
+## Testing and Maintainability
 
+This repository includes lightweight unit tests using `pytest`.
+
+So far, tests have been added for:
+
+* core metric functions, such as accuracy and precision
+* basic model behaviour, such as checking that the model returns binary predictions
+
+These tests are intentionally simple, but they help make the project more maintainable. If the code is updated later, the tests can be run quickly to check that core functionality has not been broken.
+
+To run the tests, first create a virtual environment, and activate it:
+
+```bash
+source log-reg-venv/bin/activate
+```
+
+Then run pytest from the project root:
+
+```bash
+pytest
+```
+
+The project root should be the folder containing `src/`, `tests/`, `main.py`, and `pytest.ini`.
+
+If all tests pass, pytest will show a success message. If a test fails, pytest will show which function or behaviour needs attention.
 
 ## Model/Repo Limitations: 
 - No cross-validation within this version of the repository. 
@@ -78,3 +103,4 @@ The model is assuming processed data, i.e. it is presuming the X_train and X_tes
 ## Future Upgrades:
 - Cross-Validation features added in preprocessing.py
 - Option to input pandas dataframes into the model
+
