@@ -2,7 +2,7 @@
 ## Project Overview:
 This project aimed to create a logistic regression model from scratch, in order to perform binary classification of raisin types in the raisin dataset from Kaggle. 
 
-Given the sentence in the requirements document: 'using only built-in Python and NumPy', I have made the decision to build the repository on the assumption that only built-in Python and NumPy can be used in the model, preprocessing, training, and metrics - and therefore I avoided packages like Pandas - but I have assumed I can use packages like Jupyter, PyTest and MatPlotLib for testing the model, i.e. development tools. 
+Given the sentence in the provided requirements document: 'using only built-in Python and NumPy', I have made the decision to build the repository on the assumption that only built-in Python and NumPy can be used in the model, preprocessing, training, and metrics - and therefore I avoided packages like Pandas - but I have assumed I can use packages like Jupyter, PyTest and MatPlotLib for testing the model, i.e. development tools. 
 
 Preprocessing was separated into its own file, so that the model's class is just for computing values. 
 
@@ -42,7 +42,7 @@ pytest
 - load CSV with NumPy, using 'load_csv_with_headers'
 - Split target variable (your final column) from your feature variables using 'split_features_and_target'
 - encoded labels as 0/1 using 'encode_labels'
-- train/test split dataset using 
+- train/test split dataset using 'train_test_split'
 - scale your feature variables using 'standardise_train_test' for better performance
 - load model e.g. 'model = LogisticRegressionScratch(
     learning_rate=0.01,
@@ -52,10 +52,10 @@ pytest
 - optional: Run again using L2 regularisation by doing the same on previous two steps, except using model_v2.py and class name is 'LogisticRegressionScratchWithReg'
 
 ## Key Design Decisions:
-- Implemented logistic regression from scratch using NumPy only.
+- Implemented logistic regression from scratch using in-built Python and NumPy only to satisfy the requirements documentation provided.
 - Kept preprocessing outside the model class to separate data preparation from model training.
 - Used binary cross-entropy as the objective function.
-- Used gradient descent to optimise weights and bias.
+- Used gradient descent to optimise weights and bias as I understood this concept well, and therefore using this technique would both achieve the project objective and do so within the four hour time limit. 
 - Stored losses during training to inspect whether the model is learning.
 - Scaled features before training because logistic regression with gradient descent is sensitive to feature scale.
 - Added optional L2 regularisation to test whether penalising large weights improves generalisation.
@@ -63,8 +63,22 @@ pytest
 - Used a fixed 0.5 probability threshold for binary classification.
 - Compared results against scikit-learn only as a sanity check, not as part of the main implementation.
 
-## Model Assumptions:
+## This Specific Model's Assumptions:
 The model is assuming processed data, i.e. it is presuming the X_train and X_test variables are appropriately scaled. Functions are provided in preprocessing.py for this, however the model does not resolve issues with this, and the user is expected to do the appropriate cleaning before running the analysis. 
+
+## General Logistic Regression Assumptions
+
+Logistic regression assumes that each row in the dataset is independent. In other words, one raisin measurement should not directly depend on another.
+
+For continuous input features, logistic regression assumes that each feature has a roughly linear relationship with the model’s underlying prediction score.
+
+The model also works best when input features are not too strongly correlated with each other. If two columns contain almost the same information, this can make the model less stable.
+
+Very unusual outliers can also affect the model strongly, so extreme values should be checked before training (The current preprocessing scales features, but it does not automatically detect or remove outliers.).
+
+Finally, the dataset should contain enough examples for the number of input features. If there are too many features and too few examples, the model may overfit and perform poorly on new data.
+
+
 
 ## Testing and Maintainability
 
@@ -80,6 +94,9 @@ These tests are intentionally simple, but they help make the project more mainta
 To run the tests, first create a virtual environment, and activate it:
 
 ```bash
+python3 -m venv log-reg-venv
+source log-reg-venv/bin/activate
+pip install -r requirements.txt
 source log-reg-venv/bin/activate
 ```
 
@@ -88,6 +105,8 @@ Then run pytest from the project root:
 ```bash
 pytest
 ```
+
+This will run a batch of unit tests on core metric functions, including accuracy, precision, recall, F1 score and confusion matrix, and also test the logistic regression object's features.
 
 The project root should be the folder containing `src/`, `tests/`, `main.py`, and `pytest.ini`.
 
@@ -100,7 +119,15 @@ If all tests pass, pytest will show a success message. If a test fails, pytest w
 - Results are based on a single train/test split, so scores may vary with a different split.
 - scikit-learn comparison is approximate because it uses a different optimiser.
 
-## Future Upgrades:
-- Cross-Validation features added in preprocessing.py
-- Option to input pandas dataframes into the model
+## Future Upgrades
 
+The provided task document mentions several areas that would be valuable to explore beyond the four-hour time limit. Given more time, I would extend the project by adding:
+
+* **Cross-validation** to evaluate the model more robustly than a single train/test split.
+* **Model saving and loading**, so trained weights, bias, scaling mean, and scaling standard deviation can be reused for future predictions.
+* **A small prediction API**, for example using a simple Python web server, so new raisin measurements could be submitted and classified.
+* **Basic model monitoring**, including tracking prediction accuracy over time if new labelled data becomes available.
+* **Simple data drift checks**, such as comparing new feature distributions against the original training data.
+* **Experiment tracking**, for example recording learning rate, iterations, regularisation strength, and evaluation metrics across runs.
+* **A small containerised version of the project**, so the model can be run consistently in different environments.
+* **Improved explainability**, such as reporting feature weights to show which measurements most influence the prediction.
