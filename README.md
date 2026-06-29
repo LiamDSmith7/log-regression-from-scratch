@@ -2,13 +2,13 @@
 ## Project Overview:
 This project aimed to create a logistic regression model from scratch, in order to perform binary classification of raisin types in the raisin dataset from Kaggle. 
 
-Given the sentence in the provided task document: 'using only built-in Python and NumPy', I have made the decision to build the repository on the assumption that only built-in Python and NumPy can be used in the model, preprocessing, training, and metrics - and therefore I avoided packages like Pandas - but I have assumed I can use packages like Jupyter, PyTest and MatPlotLib for testing the model, i.e. development tools. 
+Given the sentence in the provided task document: 'using only built-in Python and NumPy', I have made the decision to build the repository on the assumption that only built-in Python and NumPy can be used in the model, preprocessing, training, and metrics - and therefore I avoided packages like Pandas - but I have assumed I can use packages like Jupyter, PyTest and MatPlotLib for testing the model, i.e. development tools. This project was built using Python 3.12.7.
 
 Preprocessing was separated into its own file, so that the model's class is just for computing values. 
 
 The model was designed to handle NumPy objects, and currently does not handle other types. Future upgrades could include pandas compatibility. 
 
-The model was compared against the scikit-learn logistic regression model and the results are documented below. 
+The model was ran on the Raisin Dataset (See: data/Raisin_Dataset.csv, or: https://www.kaggle.com/datasets/nimapourmoradi/raisin-binary-classification), and the results were compared against the scikit-learn logistic regression model's performance on the same data. The results are documented below. 
 
 ## Results: 
 Logistic Regression From Scratch, Baseline Model:
@@ -26,12 +26,12 @@ F1 Score: 85%
 
 The from-scratch model performed similarly to the scikit-learn logistic regression model, with slightly stronger results on this particular train/test split. This comparison was used as a sanity check rather than as a definitive benchmark.
 
-A second version of the model was created introducing L2 regularisation. The results are shown in the exploration.ipynb file. In short, regularisation was tested using multiple L2 regularisation strengths. The best F1 score improved from 86.7% without regularisation to 87.4% with regularisation, while accuracy remained broadly unchanged. This suggests that regularisation provided a modest improvement, but there is no strong evidence that the baseline model was heavily overfitting. Further validation, such as cross-validation, would be needed to confirm this.
+A second version of the model was created introducing L2 regularisation, and can be found in src/model_with_reg.py. The results are shown in the exploration.ipynb file. In short, regularisation was tested using multiple L2 regularisation strengths. The best F1 score improved from 86.7% without regularisation to 87.4% with regularisation, while accuracy remained broadly unchanged. This suggests that regularisation provided a modest improvement, but there is no strong evidence that the baseline model was heavily overfitting. Further validation, such as cross-validation, would be needed to confirm this.
 
 
 ## Installation
 
-From the project root, create a virtual environment and install the required packages:
+Create a virtual environment and, from the project root, install the required packages:
 
 ```bash
 python3 -m venv log-reg-venv
@@ -48,7 +48,9 @@ data/Raisin_Dataset.csv
 
 ## Running the Project
 
-Run the full training and evaluation workflow from the project root:
+This project was developed using Python 3.12.7. Other Python 3 versions may work, but Python 3.12.7 was the version used when creating and testing this repository.
+
+Run the full training and evaluation workflow from the project root using:
 
 ```bash
 python main.py
@@ -63,6 +65,8 @@ To run the unit tests:
 ```bash
 pytest
 ```
+This works due to the prescence of pytest.ini, which sets the project root for pytest.
+
 
 ## Example Workflow
 
@@ -87,27 +91,25 @@ model.fit(X_train_scaled, y_train)
 ```
 
 * Generate predictions and evaluate the model using the metric functions in `metrics.py`.
-* Optionally, run the L2 regularised version using `model_v2.py` and the `LogisticRegressionScratchWithReg` class.
+* Optionally, run the L2 regularised version using `model_with_reg.py` and the `LogisticRegressionScratchWithReg` class.
 
 
 ## Key Design Decisions:
-- Implemented logistic regression from scratch using built-in Python and NumPy only to satisfy the provided task document.
+- Implemented logistic regression from scratch using built-in Python and NumPy only, to satisfy the provided task document.
 - Kept preprocessing outside the model class to separate data preparation from model training.
-- Used binary cross-entropy as the objective function.
-- Used gradient descent to optimise weights and bias as I understood this concept well, and therefore using this technique would both achieve the project objective and do so within the four hour time limit. 
+- Used binary cross-entropy as the objective function because the task is binary classification and the model outputs probabilities. Binary cross-entropy penalises incorrect probability estimates and gives gradient descent a clear loss value to minimise during training.
+- Used gradient descent to optimise weights and bias as I understood this concept well, and therefore using this technique would both achieve the project objective, and do so within the four hour time limit. 
 - Stored losses during training to inspect whether the model is learning.
 - Scaled features before training because logistic regression with gradient descent is sensitive to feature scale.
-- Added optional L2 regularisation to test whether penalising large weights improves generalisation.
 - Did not regularise the bias term because regularisation is intended to penalise large feature weights. The bias only controls the model’s baseline prediction and is not associated with any individual input feature.
 - Used a fixed 0.5 probability threshold for binary classification.
 - Compared results against scikit-learn only as a sanity check, not as part of the main implementation.
+- Added optional L2 regularisation to test whether penalising large weights improves generalisation.
 
 ## This Specific Model's Assumptions:
 The model expects processed numeric NumPy arrays as input.
 
-The preprocessing functions in preprocessing.py handle loading the CSV, splitting features and labels, encoding the target variable, creating the train/test split, and scaling the features.
-
-The model itself does not perform data cleaning, missing-value handling, outlier detection, or automatic type conversion. These steps are expected to be handled before fitting the model.
+The preprocessing functions in preprocessing.py handle loading the CSV, splitting features and labels, encoding the target variable, creating the train/test split, and scaling the features. The model itself does not perform data cleaning, missing-value handling, outlier detection, or automatic type conversion. These steps are expected to be handled before fitting the model.
 
 ## General Logistic Regression Assumptions
 
@@ -134,7 +136,6 @@ So far, tests have been added for:
 * prediction probabilities, checking that outputs are between 0 and 1
 * model fitting, checking that the correct number of feature weights is created
 
-
 These tests are intentionally simple, but they help make the project more maintainable. If the code is updated later, the tests can be run quickly to check that core functionality has not been broken.
 
 To run the tests, activate your virtual environment (If you haven't already), then run pytest from the project root:
@@ -143,7 +144,7 @@ To run the tests, activate your virtual environment (If you haven't already), th
 pytest
 ```
 
-This will run a batch of unit tests on core metric functions, including accuracy, precision, recall, F1 score and confusion matrix, and also test the logistic regression object's features.
+This will run a batch of unit tests on core metric functions, including accuracy, precision, recall, F1 score and confusion matrix, and also test the logistic regression object's features. This batch of tests can be expanded at the user's discretion.
 
 The project root should be the folder containing `src/`, `tests/`, `main.py`, and `pytest.ini`.
 
@@ -151,7 +152,8 @@ If all tests pass, pytest will show a success message. If a test fails, pytest w
 
 ## Model/Repo Limitations: 
 - No cross-validation within this version of the repository. 
-- Basic gradient descent optimiser
+- Basic gradient descent optimiser was used to meet the project's objectives on time.
+- Here a basic stop criteria was used, simply to stop after N number of iterations.
 - No automated hyperparameter search
 - Results are based on a single train/test split, so scores may vary with a different split.
 - scikit-learn comparison is approximate because it uses a different optimiser.
@@ -160,6 +162,7 @@ If all tests pass, pytest will show a success message. If a test fails, pytest w
 
 The provided task document mentions several areas that would be valuable to explore beyond the four-hour time limit. Given more time, I would extend the project by adding:
 
+* **Improved stopping criteria**, such as stopping training when the loss stops improving, rather than always training for a fixed number of iterations.
 * **Cross-validation** to evaluate the model more robustly than a single train/test split.
 * **Model saving and loading**, so trained weights, bias, scaling mean, and scaling standard deviation can be reused for future predictions.
 * **A small prediction API**, for example using a simple Python web server, so new raisin measurements could be submitted and classified.
