@@ -50,13 +50,18 @@ data/Raisin_Dataset.csv
 
 This project was developed using Python 3.12.7. Other Python 3 versions may work, but Python 3.12.7 was the version used when creating and testing this repository.
 
-Run the full training and evaluation workflow from the project root using:
+The recommended way to run the project is from the terminal using `main.py`.
+
+From the project root, run:
 
 ```bash
 python main.py
 ```
 
 This will load the data, preprocess it, train the logistic regression model, generate predictions, and print the evaluation metrics.
+
+The notebook in `notebooks/exploration.ipynb` can also be used to inspect the workflow step by step, compare model versions, and view exploratory results. Someone may do the same in their own, running step by step. However, `main.py` is the main reproducible entry point for running the project.
+
 
 ## Running Tests
 
