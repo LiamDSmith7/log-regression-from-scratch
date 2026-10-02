@@ -30,6 +30,9 @@ class LogisticRegressionScratch:
         self.weights = None
         self.bias = None
         self.losses = []
+        self.errors = []
+        self.weights_history = []
+        self.bias_history = []
 
     def sigmoid(self, z):
         """
@@ -84,6 +87,10 @@ class LogisticRegressionScratch:
 
             self.weights -= self.learning_rate * dw
             self.bias -= self.learning_rate * db
+
+            self.errors.append(np.mean(np.abs(error))) # added later for graphing purposes 
+            self.weights_history.append(self.weights.copy()) # added later for graphing purposes 
+            self.bias_history.append(self.bias) # added later for graphing purposes 
 
     def predict_proba(self, X):
         """
