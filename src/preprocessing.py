@@ -1,8 +1,5 @@
 import numpy as np
 
-
-import numpy as np
-
 def load_csv_with_headers(path):
     '''
     Loads CSV files, and loads column headers and data seperately, so outputs two variables: the headers, then data.
